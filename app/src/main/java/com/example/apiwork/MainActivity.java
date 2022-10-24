@@ -23,29 +23,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
+        Для того чтобы заполнить ListView  нам необходимо создать адптер. Адаптер используется для связи данных (массивы, базы данных)
+        со списком (ListView)
+        */
+        ListView ivProducts = findViewById(R.id.ListProduct);//Находим лист в который будем класть наши объекты
+        pAdapter = new AdapterMask(MainActivity.this, listProduct); //Создаем объект нашего адаптера
+        ivProducts.setAdapter(pAdapter); //Cвязывает подготовленный список с адаптером
 
-        ListView ivProducts = findViewById(R.id.ListProduct);
-        pAdapter = new AdapterMask(MainActivity.this, listProduct);
-        ivProducts.setAdapter(pAdapter);
-
-        new GetProducts().execute();
+        new GetProducts().execute(); //Подключение к нашей API в отдельном потоке
     }
     private class GetProducts extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... voids) {
             try {
-
-
-                URL url = new URL("http://192.168.10.176:80/NGKNN/МамшеваЮС/api/Products");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                URL url = new URL("http://192.168.10.176:80/NGKNN/МамшеваЮС/api/Products");//Строка подключения к нашей API
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //вызываем нашу API
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                /*
+                BufferedReader успрощает чтение текста из потока символов
+                InputStreamReader преводит поток байтов в поток символов
+                connection.getInputStream() получает поток байтов
+                */
                 StringBuilder result = new StringBuilder();
                 String line = "";
 
                 while ((line = reader.readLine()) != null) {
-                    result.append(line);
+                    result.append(line);//кладет строковое значение в потоке
                 }
                 return result.toString();
 
@@ -58,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             try
             {
-                JSONArray tempArray = new JSONArray(s);
+                JSONArray tempArray = new JSONArray(s);//преоброзование строки в json массив
                 for (int i = 0;i<tempArray.length();i++)
                 {
 
-                    JSONObject productJson = tempArray.getJSONObject(i);
+                    JSONObject productJson = tempArray.getJSONObject(i);//Преобразование json объекта в нашу структуру
                     Mask tempProduct = new Mask(
                             productJson.getInt("ID"),
                             productJson.getInt("MinCostForAgent"),
