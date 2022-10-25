@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                URL url = new URL("http://ssfb.ngknn.local:80/NGKNN/МамшеваЮС/api/Products");//Строка подключения к нашей API
+                URL url = new URL("https://ngknn.ru:5101/NGKNN/МамшеваЮС/api/Products");//Строка подключения к нашей API
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //вызываем нашу API
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
