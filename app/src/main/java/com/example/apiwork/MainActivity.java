@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                URL url = new URL("https://ngknn.ru:5101/NGKNN/МамшеваЮС/api/Products");//Строка подключения к нашей API
+                URL url = new URL("https://ngknn.ru:5001/NGKNN/МамшеваЮС/api/Products");//Строка подключения к нашей API
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //вызываем нашу API
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -70,11 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONObject productJson = tempArray.getJSONObject(i);//Преобразование json объекта в нашу структуру
                     Mask tempProduct = new Mask(
+                            //Названия и типы данных должны совпадать с названиями из API
                             productJson.getInt("ID"),
                             productJson.getInt("MinCostForAgent"),
                             productJson.getString("ProductTypeID"),
                             productJson.getString("Title"),
-                            productJson.getString("ArticleNumber")
+                            productJson.getString("ArticleNumber"),
+                            productJson.getString("Image")
                     );
                     listProduct.add(tempProduct);
                     pAdapter.notifyDataSetInvalidated();
